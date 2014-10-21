@@ -27,6 +27,8 @@ import java.util.regex.Matcher;
 
 import org.seagatesoft.sde.TagNode;
 import org.seagatesoft.sde.TagTree;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -34,6 +36,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.cyberneko.html.HTMLElements;
 import org.cyberneko.html.parsers.DOMParser;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Kelas yang dapat membangun TagTree dari InputSource menggunakan parser DOM. Parser DOM yang digunakan adalah parser DOM dari NekoHTML.
@@ -43,6 +47,7 @@ import org.cyberneko.html.parsers.DOMParser;
  */
 public class DOMParserTagTreeBuilder implements TagTreeBuilder
 {
+    private static Logger logger = LoggerFactory.getLogger( DOMParserTagTreeBuilder.class );
 	/**
 	 * array yang menyimpan tag2 yang diabaikan dalam membangun pohon tag
 	 */
@@ -204,7 +209,8 @@ public class DOMParserTagTreeBuilder implements TagTreeBuilder
 					{
 						// dapatkan nilai atribut src-nya
 						NamedNodeMap attributesMap = node.getAttributes();
-						String imgURI = attributesMap.getNamedItem("src").getNodeValue();
+                        Node srcNode = attributesMap.getNamedItem("src");
+						String imgURI = srcNode == null ? "" : srcNode.getNodeValue();
 						Matcher absoluteURIMatcher = absoluteURIPattern.matcher( imgURI );
 						
 						// jika URI pada atribut src bukan merupakan URI absolut (URI relatif)
@@ -268,6 +274,10 @@ public class DOMParserTagTreeBuilder implements TagTreeBuilder
 					// jika mengandung teks yang bisa terbaca, maka di-append pada innerText node parent-nya
 					parent.appendInnerText(node.getNodeValue());
 				}
+                else {
+                  // removes all strings which are whitespace only
+                  logger.debug( String.format( "filter removed nodeValue=%s", StringEscapeUtils.escapeJava(  node.getNodeValue()) ) );
+                }
 			}
 			// selain bertipe ELEMENT dan TEXT diabaikan
 		}

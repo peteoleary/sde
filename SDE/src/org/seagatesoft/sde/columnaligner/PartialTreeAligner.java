@@ -214,7 +214,7 @@ public class PartialTreeAligner implements ColumnAligner
 		{
 			for (List<String> row: tempOutput)
 			{
-				if ( row.get( columnCounter ) != null )
+				if ( row.get( columnCounter ) != null)
 				{
 					isNotNullColumnArray[ columnCounter ] = true;
 					break;

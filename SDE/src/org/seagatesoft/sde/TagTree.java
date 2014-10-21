@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Kelas untuk merepresentasikan pohon tag pada HTML Document Object Model (DOM).
  * 
@@ -32,6 +36,8 @@ import java.util.HashMap;
  */
 public class TagTree
 {
+    private static Logger logger = LoggerFactory.getLogger( TagTree.class );
+
 	/**
 	 * Referensi ke root TagTree ini.
 	 */
@@ -158,4 +164,8 @@ public class TagTree
 	{
 		return tagNodeMap.size()-1;
 	}
+
+    public void Summarize() {
+      logger.info(String.format( "TagTree size=%d, depth=%d", size(), depth() ));
+    }
 }

@@ -33,5 +33,5 @@ import org.seagatesoft.sde.TagNode;
  */
 public interface DataRegionsFinder
 {
-	public List<DataRegion> findDataRegions(TagNode tagNode, int maxNodeInGeneralizedNodes, double similarityTreshold);
+	public List<DataRegion> findDataRegions(TagNode tagNode, int childNumber, int maxNodeInGeneralizedNodes, double similarityTreshold);
 }
